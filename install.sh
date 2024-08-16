@@ -106,6 +106,7 @@ apt_tools=(
     "massdns"
     "tmux"
     "arjun"
+    "python3-venv"
 )
 
 # Install each tool via apt if not already installed
@@ -133,6 +134,21 @@ for package in "${pip_packages[@]}"; do
         python3 -m pip install "$package"
     fi
 done
+
+# Install pipx if not already installed
+if ! command_exists pipx; then
+    echo -e "${YELLOW}Installing pipx...${NC}"
+    python3 -m pip install --user pipx
+    python3 -m pipx ensurepath
+fi
+
+# Install AutoRecon using pipx
+if ! command_exists autorecon; then
+    echo -e "${YELLOW}Installing AutoRecon using pipx...${NC}"
+    pipx install git+https://github.com/Tib3rius/AutoRecon.git
+else
+    echo -e "${GREEN}AutoRecon is already installed.${NC}"
+fi
 
 # List of tools to be installed from GitHub
 github_tools=(
@@ -167,15 +183,6 @@ for repo in "${github_tools[@]}"; do
         cd ..
     fi
 done
-
-# Install AutoRecon from GitHub using pip
-echo -e "\n\n${YELLOW}Checking AutoRecon...${NC}"
-if command_exists autorecon; then
-    echo -e "${GREEN}AutoRecon is already installed.${NC}"
-else
-    echo -e "${YELLOW}Installing AutoRecon...${NC}"
-    python3 -m pip install git+https://github.com/Tib3rius/AutoRecon.git
-fi
 
 # Check if Go is installed
 echo -e "\n\n${YELLOW}Checking Go...${NC}"
@@ -227,7 +234,7 @@ if command_exists dnsx; then
     echo -e "${GREEN}dnsx is already installed.${NC}"
 else
     echo -e "${YELLOW}Installing dnsx...${NC}"
-    go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+    go install -v github.com.projectdiscovery/dnsx/cmd/dnsx@latest
     cd ~/go/bin || exit
 
     if [ ! -f /usr/local/bin/dnsx ]; then
