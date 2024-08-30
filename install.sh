@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Change the default shell to Bash and source the .bashrc file
+chsh -s /bin/bash
+source ~/.bashrc
+
 # Function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
