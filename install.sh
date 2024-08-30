@@ -184,13 +184,18 @@ for repo in "${github_tools[@]}"; do
     fi
 done
 
-# Check if Go is installed
+# Install Go
 echo -e "\n\n${YELLOW}Checking Go...${NC}"
 if command_exists go; then
     echo -e "${GREEN}Go is already installed.${NC}"
 else
     echo -e "${YELLOW}Installing Go...${NC}"
-    echo "$sudopass" | sudo -S apt install -y golang
+    wget https://go.dev/dl/go1.23.0.linux-amd64.tar.gz
+    tar -xvf go1.23.0.linux-amd64.tar.gz
+    echo "$sudopass" | sudo -S cp go /usr/bin
+    export PATH=$PATH:/usr/bin/go/bin
+    source ~/.bashrc
+    source ~/.zshrc
 fi
 
 # Check if Nuclei is installed
